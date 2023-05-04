@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace Linq2Span
 {
@@ -36,8 +37,13 @@ namespace Linq2Span
         }
 
         private TResult? current;
-        public TResult Current => current!;
+        public TResult Current
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => current!;
+        }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool MoveNext() => pipeline.MoveNext(ref state, out current);
     }
 }

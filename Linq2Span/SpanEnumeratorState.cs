@@ -16,9 +16,14 @@ namespace Linq2Span
         }
 
         [Obsolete("This member must only be used by BasePipelineElement")]
-        internal readonly int Count => Span.Length;
+        internal readonly int Count
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Span.Length;
+        }
 
         [Obsolete("This member must only be used by BasePipelineElement")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal bool MoveNext([MaybeNullWhen(false)] out T value)
         {
             if (unchecked((uint)curIdx < Span.Length))

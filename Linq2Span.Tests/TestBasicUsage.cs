@@ -11,9 +11,14 @@ namespace Linq2Span.Tests
         {
             Span<int> span = stackalloc int[15]
             {
-                1, 2, 3, 5, 6, 7, 8, 8, 9, 10, 11, 12, 13, 14, 15
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
             };
 
+            DoEnumerate(span);
+        }
+
+        private static void DoEnumerate(ReadOnlySpan<int> span)
+        {
             var enumerable = span
                 .AsPipeline()
                 .Select(new Minus1())

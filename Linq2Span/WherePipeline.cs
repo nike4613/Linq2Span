@@ -2,7 +2,7 @@
 
 namespace Linq2Span
 {
-    public struct WherePipeline<TResult, TPipeline, TSpan, TFilter> : ISpanPipeline<TSpan, TResult>
+    public struct WherePipeline<TFilter, TResult, TSpan, TPipeline> : ISpanPipeline<TSpan, TResult>
         where TPipeline : ISpanPipeline<TSpan, TResult>
         where TFilter : IStructFunc<TResult, bool>
     {
@@ -15,6 +15,7 @@ namespace Linq2Span
             this.filter = filter;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         bool ISpanPipeline<TSpan, TResult>.MoveNext(ref SpanEnumeratorState<TSpan> state, out TResult result)
         {
             while (pipeline.MoveNext(ref state, out var value))
@@ -30,7 +31,8 @@ namespace Linq2Span
             return false;
         }
 
-        bool ISpanPipeline<TSpan, TResult>.TryGetCount(in SpanEnumeratorState<TSpan> state, out int count)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        readonly bool ISpanPipeline<TSpan, TResult>.TryGetCount(in SpanEnumeratorState<TSpan> state, out int count)
         {
             // we can never know the count of a Where pipeline without enumerating
             Unsafe.SkipInit(out count);
