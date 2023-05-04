@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Linq2Span
 {
+    [StructLayout(LayoutKind.Auto)]
     public readonly struct BasePipeline<T> : ISpanPipeline<T, T>
     {
         // These members we use are specifically supposed to be used from this callsite only

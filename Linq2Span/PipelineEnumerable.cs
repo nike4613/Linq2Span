@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Linq2Span
 {
+    [StructLayout(LayoutKind.Auto)]
     public readonly ref partial struct PipelineEnumerable<TResult, TPipeline>
         where TPipeline : ISpanPipeline<TResult, TResult>
     {
@@ -29,6 +31,7 @@ namespace Linq2Span
         public bool TryCopyTo(Span<TResult> dest, out int wrote) => PipelineHelpers<TResult, TPipeline, TResult>.TryCopyTo(Pipeline, Span, dest, out wrote);
     }
 
+    [StructLayout(LayoutKind.Auto)]
     public readonly ref partial struct PipelineEnumerable<TResult, TPipeline, TSpan>
         where TPipeline : ISpanPipeline<TSpan, TResult>
     {
@@ -54,6 +57,7 @@ namespace Linq2Span
         public bool TryCopyTo(Span<TResult> dest, out int wrote) => PipelineHelpers<TResult, TPipeline, TSpan>.TryCopyTo(Pipeline, Span, dest, out wrote);
     }
 
+    [StructLayout(LayoutKind.Auto)]
     public ref struct PipelineEnumerator<TResult, TPipeline, TSpan>
         where TPipeline : ISpanPipeline<TSpan, TResult>
     {

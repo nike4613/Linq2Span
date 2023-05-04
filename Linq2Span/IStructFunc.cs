@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Linq2Span
 {
@@ -7,6 +8,7 @@ namespace Linq2Span
         TOut Invoke(TIn arg0);
     }
 
+    [StructLayout(LayoutKind.Auto)]
     public readonly struct DelegateStructFunc<TIn, TOut> : IStructFunc<TIn, TOut>
     {
         private readonly Func<TIn, TOut> del;
@@ -19,6 +21,7 @@ namespace Linq2Span
         public TOut Invoke(TIn arg0) => del.Invoke(arg0);
     }
 
+    [StructLayout(LayoutKind.Auto)]
     public readonly struct DelegateStructFuncSameType<T> : IStructFunc<T, T>
     {
         private readonly Func<T, T> del;
@@ -31,6 +34,7 @@ namespace Linq2Span
         public T Invoke(T arg0) => del.Invoke(arg0);
     }
 
+    [StructLayout(LayoutKind.Auto)]
     public readonly struct DelegateStructPredicate<T> : IStructFunc<T, bool>
     {
         private readonly Func<T, bool> del;

@@ -1,7 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Linq2Span
 {
+    [StructLayout(LayoutKind.Auto)]
     public struct SelectPipeline<TTransform, TIn, TOut, TSpan, TPipeline> : ISpanPipeline<TSpan, TOut>
         where TTransform : IStructFunc<TIn, TOut>
         where TPipeline : ISpanPipeline<TSpan, TIn>
@@ -35,6 +37,7 @@ namespace Linq2Span
             => pipeline.TryGetCount(in state, out count);
     }
 
+    [StructLayout(LayoutKind.Auto)]
     public struct SelectPipelineInSpanType<TTransform, TOut, TSpan, TPipeline> : ISpanPipeline<TSpan, TOut>
         where TTransform : IStructFunc<TSpan, TOut>
         where TPipeline : ISpanPipeline<TSpan, TSpan>
@@ -68,6 +71,7 @@ namespace Linq2Span
             => pipeline.TryGetCount(in state, out count);
     }
 
+    [StructLayout(LayoutKind.Auto)]
     public struct SelectPipelineSameType<TTransform, TResult, TSpan, TPipeline> : ISpanPipeline<TSpan, TResult>
         where TTransform : IStructFunc<TResult, TResult>
         where TPipeline : ISpanPipeline<TSpan, TResult>
@@ -102,6 +106,7 @@ namespace Linq2Span
             => pipeline.TryGetCount(in state, out count);
     }
 
+    [StructLayout(LayoutKind.Auto)]
     public struct SelectPipelineSameSpanType<TTransform, TSpan, TPipeline> : ISpanPipeline<TSpan, TSpan>
         where TTransform : IStructFunc<TSpan, TSpan>
         where TPipeline : ISpanPipeline<TSpan, TSpan>

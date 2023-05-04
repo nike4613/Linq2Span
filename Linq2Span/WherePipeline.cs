@@ -1,7 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Linq2Span
 {
+    [StructLayout(LayoutKind.Auto)]
     public struct WherePipeline<TFilter, TResult, TSpan, TPipeline> : ISpanPipeline<TSpan, TResult>
         where TPipeline : ISpanPipeline<TSpan, TResult>
         where TFilter : IStructFunc<TResult, bool>
@@ -39,6 +41,8 @@ namespace Linq2Span
             return false;
         }
     }
+
+    [StructLayout(LayoutKind.Auto)]
     public struct WherePipelineSpanType<TFilter, TSpan, TPipeline> : ISpanPipeline<TSpan, TSpan>
         where TPipeline : ISpanPipeline<TSpan, TSpan>
         where TFilter : IStructFunc<TSpan, bool>
