@@ -4,7 +4,26 @@ using System.Runtime.CompilerServices;
 
 namespace Linq2Span
 {
-    public readonly ref struct PipelineEnumerable<TResult, TPipeline, TSpan>
+    public readonly ref partial struct PipelineEnumerable<TResult, TPipeline>
+        where TPipeline : ISpanPipeline<TResult, TResult>
+    {
+        internal readonly ReadOnlySpan<TResult> Span;
+
+        internal readonly TPipeline Pipeline;
+
+        public PipelineEnumerable(ReadOnlySpan<TResult> span, TPipeline pipeline)
+        {
+            Span = span;
+            Pipeline = pipeline;
+        }
+
+        public bool TryGetCount(out int count)
+            => Pipeline.TryGetCount(new SpanEnumeratorState<TResult>(Span), out count);
+
+        public PipelineEnumerator<TResult, TPipeline, TResult> GetEnumerator() => new(Span, Pipeline);
+    }
+
+    public readonly ref partial struct PipelineEnumerable<TResult, TPipeline, TSpan>
         where TPipeline : ISpanPipeline<TSpan, TResult>
     {
         internal readonly ReadOnlySpan<TSpan> Span;

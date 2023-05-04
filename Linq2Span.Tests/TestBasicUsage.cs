@@ -24,6 +24,7 @@ namespace Linq2Span.Tests
                 .Select(new Minus1())
                 .Where(new IsEven())
                 .Select(new Div2());
+                //.Select<AsByte, byte>(new AsByte());
 
             foreach (var element in enumerable)
             {
@@ -42,6 +43,10 @@ namespace Linq2Span.Tests
         private readonly struct Div2 : IStructFunc<int, int>
         {
             public readonly int Invoke(int arg0) => arg0 / 2;
+        }
+        private readonly struct AsByte : IStructFunc<int, byte>
+        {
+            public readonly byte Invoke(int arg0) => (byte)arg0;
         }
     }
 }
