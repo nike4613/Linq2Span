@@ -24,7 +24,6 @@ namespace Linq2Span.Tests
         private static void DoEnumerate(ReadOnlySpan<int> span)
         {
             var enumerable = span
-                .AsPipeline()
                 .Select(new Minus1())
                 .Where(new IsEven())
                 .Select(new Div2())
@@ -41,7 +40,7 @@ namespace Linq2Span.Tests
         private static void DoEnumerateLinq(ReadOnlySpan<int> span)
         {
             var e2 =
-                from i in span.AsPipeline()
+                from i in span
                 where i > 5
                 select i + 1;
 
