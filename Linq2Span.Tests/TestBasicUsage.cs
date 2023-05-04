@@ -14,11 +14,20 @@ namespace Linq2Span.Tests
                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
             };
 
+            Span<int> span2 = stackalloc int[15];
+
             DoEnumerate(span);
             DoEnumerateLinq(span);
             ToArray1(span);
             ToArray2(span);
             ToArray3(span);
+
+            CopyTo1(span, span2);
+            CopyTo2(span, span2);
+            CopyTo3(span, span2);
+            TryCopyTo1(span, span2);
+            TryCopyTo2(span, span2);
+            TryCopyTo3(span, span2);
         }
 
         private static void DoEnumerate(ReadOnlySpan<int> span)
@@ -50,18 +59,58 @@ namespace Linq2Span.Tests
             }
         }
 
+        private static void ToArray0(ReadOnlySpan<int> span)
+        {
+            var a0 = span.ToArray();
+        }
         private static void ToArray1(ReadOnlySpan<int> span)
         {
             var a1 = span.AsPipeline().ToArray();
         }
         private static void ToArray2(ReadOnlySpan<int> span)
         {
-            var a2 = span.AsPipeline().Select(new Minus1()).ToArray();
+            var a2 = span.Select(new Minus1()).ToArray();
         }
         private static void ToArray3(ReadOnlySpan<int> span)
         {
-            var a3 = span.AsPipeline().Where(new IsEven()).ToArray();
+            var a3 = span.Where(new IsEven()).ToArray();
         }
+
+        private static void CopyTo0(ReadOnlySpan<int> s, Span<int> d)
+        {
+            s.CopyTo(d);
+        }
+        private static void CopyTo1(ReadOnlySpan<int> s, Span<int> d)
+        {
+            s.AsPipeline().CopyTo(d);
+        }
+        private static void CopyTo2(ReadOnlySpan<int> s, Span<int> d)
+        {
+            s.Select(new Minus1()).CopyTo(d);
+        }
+        private static void CopyTo3(ReadOnlySpan<int> s, Span<int> d)
+        {
+            s.Where(new IsEven()).CopyTo(d);
+        }
+
+
+        private static void TryCopyTo0(ReadOnlySpan<int> s, Span<int> d)
+        {
+            s.TryCopyTo(d);
+        }
+        private static void TryCopyTo1(ReadOnlySpan<int> s, Span<int> d)
+        {
+            s.AsPipeline().TryCopyTo(d);
+        }
+        private static void TryCopyTo2(ReadOnlySpan<int> s, Span<int> d)
+        {
+            s.Select(new Minus1()).TryCopyTo(d);
+        }
+        private static void TryCopyTo3(ReadOnlySpan<int> s, Span<int> d)
+        {
+            s.Where(new IsEven()).TryCopyTo(d);
+        }
+
 
         private readonly struct Minus1 : IStructFunc<int, int>, IStructFunc<byte, byte>
         {

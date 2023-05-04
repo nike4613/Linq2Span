@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace Linq2Span
@@ -24,6 +23,10 @@ namespace Linq2Span
 
         public TResult[] ToArray() => PipelineHelpers<TResult, TPipeline, TResult>.ToArray(Pipeline, Span);
         public List<TResult> ToList() => PipelineHelpers<TResult, TPipeline, TResult>.ToList(Pipeline, Span);
+
+        public int CopyTo(Span<TResult> dest) => PipelineHelpers<TResult, TPipeline, TResult>.CopyTo(Pipeline, Span, dest);
+        public bool TryCopyTo(Span<TResult> dest) => PipelineHelpers<TResult, TPipeline, TResult>.TryCopyTo(Pipeline, Span, dest, out _);
+        public bool TryCopyTo(Span<TResult> dest, out int wrote) => PipelineHelpers<TResult, TPipeline, TResult>.TryCopyTo(Pipeline, Span, dest, out wrote);
     }
 
     public readonly ref partial struct PipelineEnumerable<TResult, TPipeline, TSpan>
@@ -45,6 +48,10 @@ namespace Linq2Span
 
         public TResult[] ToArray() => PipelineHelpers<TResult, TPipeline, TSpan>.ToArray(Pipeline, Span);
         public List<TResult> ToList() => PipelineHelpers<TResult, TPipeline, TSpan>.ToList(Pipeline, Span);
+
+        public int CopyTo(Span<TResult> dest) => PipelineHelpers<TResult, TPipeline, TSpan>.CopyTo(Pipeline, Span, dest);
+        public bool TryCopyTo(Span<TResult> dest) => PipelineHelpers<TResult, TPipeline, TSpan>.TryCopyTo(Pipeline, Span, dest, out _);
+        public bool TryCopyTo(Span<TResult> dest, out int wrote) => PipelineHelpers<TResult, TPipeline, TSpan>.TryCopyTo(Pipeline, Span, dest, out wrote);
     }
 
     public ref struct PipelineEnumerator<TResult, TPipeline, TSpan>
