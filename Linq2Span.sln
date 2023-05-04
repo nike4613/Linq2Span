@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33417.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linq2Span", "Linq2Span\Linq2Span.csproj", "{2C34AD6C-541A-4F22-AF56-DBBD89D49DEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linq2Span.Tests", "Linq2Span.Tests\Linq2Span.Tests.csproj", "{EAEE453B-25F0-4BF0-8416-C116BB36B05F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2C34AD6C-541A-4F22-AF56-DBBD89D49DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C34AD6C-541A-4F22-AF56-DBBD89D49DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C34AD6C-541A-4F22-AF56-DBBD89D49DEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAEE453B-25F0-4BF0-8416-C116BB36B05F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAEE453B-25F0-4BF0-8416-C116BB36B05F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAEE453B-25F0-4BF0-8416-C116BB36B05F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAEE453B-25F0-4BF0-8416-C116BB36B05F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
