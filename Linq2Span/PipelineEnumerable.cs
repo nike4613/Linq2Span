@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -17,10 +18,12 @@ namespace Linq2Span
             Pipeline = pipeline;
         }
 
-        public bool TryGetCount(out int count)
-            => Pipeline.TryGetCount(new SpanEnumeratorState<TResult>(Span), out count);
+        public bool TryGetCount(out int count) => Pipeline.TryGetCount(new SpanEnumeratorState<TResult>(Span), out count);
 
         public PipelineEnumerator<TResult, TPipeline, TResult> GetEnumerator() => new(Span, Pipeline);
+
+        public TResult[] ToArray() => PipelineHelpers<TResult, TPipeline, TResult>.ToArray(Pipeline, Span);
+        public List<TResult> ToList() => PipelineHelpers<TResult, TPipeline, TResult>.ToList(Pipeline, Span);
     }
 
     public readonly ref partial struct PipelineEnumerable<TResult, TPipeline, TSpan>
@@ -36,10 +39,12 @@ namespace Linq2Span
             Pipeline = pipeline;
         }
 
-        public bool TryGetCount(out int count)
-            => Pipeline.TryGetCount(new SpanEnumeratorState<TSpan>(Span), out count);
+        public bool TryGetCount(out int count) => Pipeline.TryGetCount(new SpanEnumeratorState<TSpan>(Span), out count);
 
         public PipelineEnumerator<TResult, TPipeline, TSpan> GetEnumerator() => new(Span, Pipeline);
+
+        public TResult[] ToArray() => PipelineHelpers<TResult, TPipeline, TSpan>.ToArray(Pipeline, Span);
+        public List<TResult> ToList() => PipelineHelpers<TResult, TPipeline, TSpan>.ToList(Pipeline, Span);
     }
 
     public ref struct PipelineEnumerator<TResult, TPipeline, TSpan>
