@@ -28,6 +28,10 @@ namespace Linq2Span.Tests
             TryCopyTo1(span, span2);
             TryCopyTo2(span, span2);
             TryCopyTo3(span, span2);
+
+            SkipTake0(span);
+            SkipTake1(span);
+            SkipTake2(span);
         }
 
         private static void DoEnumerate(ReadOnlySpan<int> span)
@@ -38,7 +42,8 @@ namespace Linq2Span.Tests
                 .Select(new Div2())
                 .Select<AsByte, byte>(new AsByte())
                 .Select(new Minus1())
-                .Select<AsInt, int>(new AsInt());
+                .Select<AsInt, int>(new AsInt())
+                .To();
 
             foreach (var element in enumerable)
             {
@@ -111,6 +116,20 @@ namespace Linq2Span.Tests
             s.Where(new IsEven()).TryCopyTo(d);
         }
 
+        private static void SkipTake0(ReadOnlySpan<int> s)
+        {
+            s.Skip(2).Take(5).ToArray();
+        }
+
+        private static void SkipTake1(ReadOnlySpan<int> s)
+        {
+            s.AsPipeline().Skip(2).Take(5).ToArray();
+        }
+
+        private static void SkipTake2(ReadOnlySpan<int> s)
+        {
+            s.AsPipeline().Select(new Minus1()).Skip(2).Take(5).ToArray();
+        }
 
         private readonly struct Minus1 : IStructFunc<int, int>, IStructFunc<byte, byte>
         {

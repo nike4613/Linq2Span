@@ -1,4 +1,5 @@
 ﻿using Linq2Span;
+using System.ComponentModel;
 
 namespace System.Linq
 {
@@ -84,5 +85,78 @@ namespace System.Linq
 
         #endregion
         #endregion
+
+        #region Other Combinators
+        // These are combinators which can be implemented for a span without the general pipeline fluff.
+        // Here, we also want to take the opportunity to optimize what we can, where we can.
+
+        /****************** SKIP ******************/
+
+        public static Span<T> Skip<T>(this Span<T> span, int amount) => unchecked((uint)amount >= span.Length) ? default : span.Slice(amount);
+        public static ReadOnlySpan<T> Skip<T>(this ReadOnlySpan<T> span, int amount) => unchecked((uint)amount >= span.Length) ? default : span.Slice(amount);
+
+        public static PipelineEnumerable<TResult, SkipPipelineSpanType<TResult, TPipeline>>
+            Skip<TResult, TPipeline>(this PipelineEnumerable<TResult, TPipeline> pipe, int amount)
+            where TPipeline : ISpanPipeline<TResult, TResult>
+            => new(pipe.Span, new(amount, pipe.Pipeline));
+
+        public static PipelineEnumerable<TResult, SkipPipeline<TResult, TPipeline, TSpan>, TSpan>
+            Skip<TResult, TPipeline, TSpan>(this PipelineEnumerable<TResult, TPipeline, TSpan> pipe, int amount)
+            where TPipeline : ISpanPipeline<TSpan, TResult>
+            => new(pipe.Span, new(amount, pipe.Pipeline));
+
+        public static PipelineEnumerable<TResult, SkipPipelineSpanType<TResult, TPipeline>>
+            Skip<TResult, TPipeline>(this PipelineEnumerable<TResult, TPipeline, TResult> pipe, int amount)
+            where TPipeline : ISpanPipeline<TResult, TResult>
+            => new(pipe.Span, new(amount, pipe.Pipeline));
+
+        // optimize for when the Skip is directly wrapping a BasePipeline
+        public static PipelineEnumerable<TResult, BasePipeline<TResult>>
+            Skip<TResult>(this PipelineEnumerable<TResult, BasePipeline<TResult>> pipe, int amount)
+            => new(pipe.Span.Skip(amount), pipe.Pipeline);
+
+        public static PipelineEnumerable<TResult, BasePipeline<TResult>>
+            Skip<TResult>(this PipelineEnumerable<TResult, BasePipeline<TResult>, TResult> pipe, int amount)
+            => new(pipe.Span.Skip(amount), pipe.Pipeline);
+
+        /****************** TAKE ******************/
+
+        public static Span<T> Take<T>(this Span<T> span, int amount) => span.Slice(0, Math.Min(span.Length, amount));
+        public static ReadOnlySpan<T> Take<T>(this ReadOnlySpan<T> span, int amount) => span.Slice(0, Math.Min(span.Length, amount));
+
+        public static PipelineEnumerable<TResult, TakePipelineSpanType<TResult, TPipeline>>
+            Take<TResult, TPipeline>(this PipelineEnumerable<TResult, TPipeline> pipe, int amount)
+            where TPipeline : ISpanPipeline<TResult, TResult>
+            => new(pipe.Span, new(amount, pipe.Pipeline));
+
+        public static PipelineEnumerable<TResult, TakePipeline<TResult, TPipeline, TSpan>, TSpan>
+            Take<TResult, TPipeline, TSpan>(this PipelineEnumerable<TResult, TPipeline, TSpan> pipe, int amount)
+            where TPipeline : ISpanPipeline<TSpan, TResult>
+            => new(pipe.Span, new(amount, pipe.Pipeline));
+
+        public static PipelineEnumerable<TResult, TakePipelineSpanType<TResult, TPipeline>>
+            Take<TResult, TPipeline>(this PipelineEnumerable<TResult, TPipeline, TResult> pipe, int amount)
+            where TPipeline : ISpanPipeline<TResult, TResult>
+            => new(pipe.Span, new(amount, pipe.Pipeline));
+
+        // optimize for when the Take is directly wrapping a BasePipeline
+        public static PipelineEnumerable<TResult, BasePipeline<TResult>>
+            Take<TResult>(this PipelineEnumerable<TResult, BasePipeline<TResult>> pipe, int amount)
+            => new(pipe.Span.Take(amount), pipe.Pipeline);
+
+        public static PipelineEnumerable<TResult, BasePipeline<TResult>>
+            Take<TResult>(this PipelineEnumerable<TResult, BasePipeline<TResult>, TResult> pipe, int amount)
+            => new(pipe.Span.Take(amount), pipe.Pipeline);
+
+        #endregion
+
+        // To simplifies the type, if possible
+        public static PipelineEnumerable<TResult, TPipeline> To<TResult, TPipeline>(this PipelineEnumerable<TResult, TPipeline, TResult> pipe)
+            where TPipeline : ISpanPipeline<TResult, TResult>
+            => new(pipe.Span, pipe.Pipeline);
+        // identity versions of To
+        public static PipelineEnumerable<TResult, TPipeline> To<TResult, TPipeline>(this PipelineEnumerable<TResult, TPipeline> pipe)
+            where TPipeline : ISpanPipeline<TResult, TResult>
+            => pipe;
     }
 }

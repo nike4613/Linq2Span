@@ -23,6 +23,9 @@ namespace Linq2Span
 
         public PipelineEnumerator<TResult, TPipeline, TResult> GetEnumerator() => new(Span, Pipeline);
 
+        public static implicit operator PipelineEnumerable<TResult, TPipeline>(PipelineEnumerable<TResult, TPipeline, TResult> other)
+            => new(other.Span, other.Pipeline);
+
         public TResult[] ToArray() => PipelineHelpers<TResult, TPipeline, TResult>.ToArray(Pipeline, Span);
         public List<TResult> ToList() => PipelineHelpers<TResult, TPipeline, TResult>.ToList(Pipeline, Span);
 
